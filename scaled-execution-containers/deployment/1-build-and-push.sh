@@ -120,9 +120,9 @@ log_info "Building container from Dockerfile..."
 cd "$PROJECT_ROOT/container"
 if [ "$FORCE_REBUILD" = true ]; then
     log_info "Using --no-cache for clean build"
-    docker build --no-cache -t "$ECR_REPO_NAME:latest" .
+    docker build --platform linux/amd64 --no-cache -t "$ECR_REPO_NAME:latest" .
 else
-    docker build -t "$ECR_REPO_NAME:latest" .
+    docker build --platform linux/amd64 -t "$ECR_REPO_NAME:latest" .
 fi
 log_success "Container built"
 
