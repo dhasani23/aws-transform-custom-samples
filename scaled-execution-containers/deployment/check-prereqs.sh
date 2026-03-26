@@ -107,13 +107,12 @@ echo ""
 
 # Check AWS CDK CLI (for CDK deployment)
 echo "6. Checking AWS CDK CLI (for CDK deployment)..."
-if command -v cdk &> /dev/null || npx cdk --version &> /dev/null 2>&1; then
-    if command -v cdk &> /dev/null; then
-        CDK_VERSION=$(cdk --version 2>&1)
-    else
-        CDK_VERSION=$(npx cdk --version 2>&1)
-    fi
+if command -v cdk &> /dev/null; then
+    CDK_VERSION=$(cdk --version 2>&1)
     echo "   ✅ AWS CDK installed: $CDK_VERSION"
+elif command -v npx &> /dev/null && timeout 10 npx --no cdk --version &> /dev/null 2>&1; then
+    CDK_VERSION=$(npx --no cdk --version 2>&1)
+    echo "   ✅ AWS CDK installed (via npx): $CDK_VERSION"
 else
     echo "   ⚠️  AWS CDK is NOT installed (required for CDK deployment)"
     echo "      → Install: npm install -g aws-cdk"
